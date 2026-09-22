@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Check de Levantamiento de Equipos</title>
+
+<style>
+
+body{
+	font-family: "Segoe UI", Arial, sans-serif;
+	font-size:14px;
+	background:#f4f4f4;
+	margin:0;
+	padding:20px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.header{
+    border-bottom:2px solid #ddd;
+    padding-bottom:15px;
+    margin-bottom:20px;
+}
+
+.logo{
+    width:320px;
+    height:auto;
+}
+
+.titulo{
+    text-align:center;
+}
+
+.titulo h1{
+    color:#005792;
+    margin-bottom:5px;
+}
+
+.subtitulo{
+    text-align:center;
+    color:#666;
+    font-size:18px;
+    margin-bottom:20px;
+}
+
+.progress-container{
+    width:100%;
+    background:#ddd;
+    border-radius:20px;
+    margin-bottom:25px;
+}
+
+.progress-bar{
+    width:0%;
+    height:24px;
+    background:#28a745;
+    color:white;
+    text-align:center;
+    line-height:24px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.section{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:12px;
+}
+
+.section h2{
+    color:#005792;
+    font-size:17px;
+    margin-bottom:10px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+}
+
+.grid-fluidos{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:12px;
+}
+
+@media (max-width:900px){
+
+    .grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media (max-width:600px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+/* NUEVO */
+
+.preview{
+    width:200px;
+    height:150px;
+    object-fit:cover;
+    display:none;
+    margin-top:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    background:white;
+}
+
+.evidencia{
+
+    margin-bottom:20px;
+}
+
+#evidenciasExtras{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:12px;
+    margin-top:15px;
+
+}
+
+.grid-fotos{
+    display:grid;
+    grid-template-columns:repeat(2, 320px);
+    justify-content:center;
+    column-gap:80px;
+    row-gap:20px;
+    margin-top:15px;
+
+}
+
+.evidenciaExtra{
+    width:320px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:10px;
+    background:#fafafa;
+}
+
+/* CONTINÚA TU CÓDIGO */
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-top:8px;
+    font-size:13px;
+
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:6px;
+    font-size:13px;
+    font-family:"Segoe UI", Arial, sans-serif;
+    margin-top:3px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    box-sizing:border-box;
+}
+
+textarea{
+    overflow:hidden;
+    resize:none;
+    min-height:80px;
+}
+
+button{
+    background:#005792;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-right:10px;
+}
+
+button:hover{
+    background:#003f66;
+}
+
+@media print{
+
+    button{
+        display:none !important;
+    }
+
+    input[type="file"]{
+        display:none !important;
+    }
+
+    /* Evita cortar cada bloque de evidencia */
+    .evidencia,
+    .evidenciaExtra{
+        break-inside:avoid;
+        page-break-inside:avoid;
+    }
+
+    /* Evita cortar imágenes */
+    img,
+    .preview{
+        break-inside:avoid;
+        page-break-inside:avoid;
+    }
+
+    /* Evita dejar títulos separados de su contenido */
+    h2,
+    h3,
+    label{
+     *  break-after:avoid;
+        page-break-after:avoid;
+    }
+
+    /* Tablas */
+    table,
+    tr{
+        break-inside:avoid;
+        page-break-inside:avoid;
+    }
+
+    /* Permite que una sección muy larga continúe
+       en la siguiente página */
+       .section{
+       break-inside:avoid;
+       page-break-inside:avoid;
+    }
+
+}
+
+.tabla-repuestos{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.tabla-repuestos th{
+    background:#005792;
+    color:white;
+    padding:10px;
+}
+
+.tabla-repuestos td{
+    border:1px solid #ddd;
+    padding:8px;
+}
+
+.tabla-repuestos input{
+    width:100%;
+}
+
+.tabla-repuestos button{
+
+    background:#dc3545;
+    padding:8px 12px;
+    margin:0;
+
+}
+
+.tabla-repuestos button:hover{
+
+    background:#b02a37;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<img src="Logo-Color.png" alt="Partequipos" class="logo">
+</div>
+
+<div class="titulo">
+<h1>Check de Levantamiento de Equipos</h1>
+</div>
+
+<div class="subtitulo">
+Formulario de Levantamiento Técnico
+</div>
+
+<div class="progress-container">
+<div id="progressBar" class="progress-bar">0%</div>
+</div>
+
+<form id="checkForm">
+
+<div class="section">
+<h2>1. Información General</h2>
+
+<div class="grid">
+
+<div>
+<label>Fecha</label>
+<input type="date">
+</div>
+
+<div>
+<label>Técnico Responsable</label>
+<input type="text">
+</div>
+
+<div>
+<label>Cliente</label>
+<input type="text">
+</div>
+
+<div>
+<label>Proyecto / Obra</label>
+<input type="text">
+</div>
+
+<div>
+<label>Ciudad</label>
+<input type="text">
+</div>
+
+<div>
+<label>Ubicación</label>
+<input type="text">
+</div>
+
+<div>
+<label>Marca</label>
+<input type="text">
+</div>
+
+<div>
+<label>Modelo</label>
+<input type="text">
+</div>
+
+<div>
+<label>Número de Serie</label>
+<input type="text">
+</div>
+
+<div>
+<label>Horómetro</label>
+<input type="text">
+</div>
+
+<div>
+<label>Marca del Motor</label>
+<input type="text">
+</div>
+
+<div>
+<label>Serie del Motor</label>
+<input type="text">
+</div>
+
+</div>
+</div>
+
+<div class="section">
+<h2>2. Tipo de Levantamiento</h2>
+
+<select>
+<option value="">Seleccione</option>
+<option>Levantamiento Técnico</option>
+<option>Entrega Técnica</option>
+<option>Diagnóstico</option>
+<option>Inspección Preventiva</option>
+<option>Inspección Correctiva</option>
+<option>Recepción de Equipo</option>
+<option>Auditoría Técnica</option>
+<option>Otro</option>
+</select>
+</div>
+
+<div class="section">
+<h2>3. Historial de Mantenimiento</h2>
+
+<div class="grid">
+
+<div>
+<label>Último Cambio Aceite Motor (h)</label>
+<input type="text">
+</div>
+
+<div>
+<label>Filtro Aceite Motor (h)</label>
+<input type="text">
+</div>
+
+<div>
+<label>Filtro Combustible Primario (h)</label>
+<input type="text">
+</div>
+
+<div>
+<label>Filtro Combustible Secundario (h)</label>
+<input type="text">
+</div>
+
+<div>
+<label>Filtro Hidráulico (h)</label>
+<input type="text">
+</div>
+
+<div>
+<label>Aceite Hidráulico (h)</label>
+<input type="text">
+</div>
+
+<div>
+<label>Último Cambio Refrigerante</label>
+<input type="text">
+</div>
+
+<div>
+<label>Próximo Mantenimiento</label>
+<input type="text">
+</div>
+
+</div>
+</div>
+
+<div class="section">
+
+<h2>4. Nivel y Estado de Fluidos</h2>
+
+<div class="section">
+
+<h2>4. Nivel y Estado de Fluidos</h2>
+
+<div class="grid-fluidos">
+
+    <div>
+        <label>Nivel Aceite Motor</label>
+        <select>
+            <option>Correcto</option>
+            <option>Bajo</option>
+            <option>Alto</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Condición Aceite Motor</label>
+        <select>
+            <option>Normal</option>
+            <option>Oscuro</option>
+            <option>Contaminado</option>
+            <option>Agua</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Nivel Refrigerante</label>
+        <select>
+            <option>Correcto</option>
+            <option>Bajo</option>
+            <option>Alto</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Nivel Aceite Hidráulico</label>
+        <select>
+            <option>Correcto</option>
+            <option>Bajo</option>
+            <option>Alto</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Nivel Aceite Transmision</label>
+        <select>
+            <option>Correcto</option>
+            <option>Bajo</option>
+            <option>Alto</option>
+            <option>N/A</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Nivel Aceite Cubos</label>
+        <select>
+            <option>Correcto</option>
+            <option>Bajo</option>
+            <option>Alto</option>
+            <option>N/A</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Nivel Aceite Tandem</label>
+        <select>
+            <option>Correcto</option>
+            <option>Bajo</option>
+            <option>Alto</option>
+            <option>N/A</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Nivel Aceite Motor de giro</label>
+        <select>
+            <option>Correcto</option>
+            <option>Bajo</option>
+            <option>Alto</option>
+            <option>N/A</option>
+        </select>
+    </div>
+
+</div>
+
+</div>
+<h2>5. Inspección Visual</h2>
+
+<div class="grid">
+
+<div>
+<label>Fugas Hidráulicas</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado de Mangueras</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado de Conectores</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado del Arnés Eléctrico</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado de la Batería</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado de Fusibles</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado del Chasis</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado de Cabina</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado General de la Máquina</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado de Luces</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado de Alarma de Reversa</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado de Tambor / Rodillo</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado de Raspadores</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado de Carrileria</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado de Dientes/cuchilla</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+<div>
+<label>Estado de Llantas</label>
+<select>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Malo</option>
+<option>No Aplica</option>
+</select>
+</div>
+
+</div>
+
+<label>Observaciones de Inspección Visual</label>
+
+<textarea rows="4"
+placeholder="Registrar hallazgos visuales observados en el equipo"></textarea>
+
+</div>
+
+<div class="section">
+
+
+<h2>6. Evidencias Fotográficas</h2>
+
+<div class="grid-fotos">
+
+<div class="evidencia">
+<label>Placa Serial</label>
+<input type="file" accept="image/*"
+onchange="mostrarImagen(event,'imgPlaca')">
+<img id="imgPlaca" class="preview">
+</div>
+
+<div class="evidencia">
+<label>Horómetro</label>
+<input type="file" accept="image/*"
+onchange="mostrarImagen(event,'imgHorometro')">
+<img id="imgHorometro" class="preview">
+</div>
+
+<div class="evidencia">
+<label>Vista Frontal</label>
+<input type="file" accept="image/*"
+onchange="mostrarImagen(event,'imgFrontal')">
+<img id="imgFrontal" class="preview">
+</div>
+
+<div class="evidencia">
+<label>Vista Lateral</label>
+<input type="file" accept="image/*"
+onchange="mostrarImagen(event,'imgLateral')">
+<img id="imgLateral" class="preview">
+</div>
+
+<div class="evidencia">
+<label>Compartimiento Motor</label>
+<input type="file" accept="image/*"
+onchange="mostrarImagen(event,'imgMotor')">
+<img id="imgMotor" class="preview">
+</div>
+
+<div class="evidencia">
+<label>Pantalla Principal</label>
+<input type="file" accept="image/*"
+onchange="mostrarImagen(event,'imgPantalla')">
+<img id="imgPantalla" class="preview">
+</div>
+
+<div class="evidencia">
+<label>Medición de Presión</label>
+<input type="file" accept="image/*"
+onchange="mostrarImagen(event,'imgPresion')">
+<img id="imgPresion" class="preview">
+</div>
+
+<div class="evidencia">
+<label>Medición de Temperatura</label>
+<input type="file" accept="image/*"
+onchange="mostrarImagen(event,'imgTemperatura')">
+<img id="imgTemperatura" class="preview">
+</div>
+
+<hr>
+
+<h3>Evidencias Adicionales</h3>
+
+<button
+type="button"
+onclick="agregarEvidencia()">
+📷 Agregar Evidencia
+</button>
+
+<div id="evidenciasExtras">
+</div>
+
+</div>
+</div>
+<div class="section">
+
+<h2>7. Estado Electrónico y Códigos de Falla </h2>
+
+<div class="grid">
+
+<label>Pantalla Funcional</label>
+<select id="pantallaFuncional">
+<option>Sí</option>
+<option>No</option>
+</select>
+
+<label>Puerto Diagnóstico Identificado</label>
+<select id="puertoDiagnostico">
+<option>Sí</option>
+<option>No</option>
+</select>
+
+<label>Códigos de Falla Activos</label>
+<textarea id="codigosActivos" rows="4"></textarea>
+
+<label>Descripción de Fallas Activas</label>
+<textarea id="descripcionActivos" rows="4"></textarea>
+
+<label>Códigos de Falla Históricos</label>
+<textarea id="codigosHistoricos" rows="4"></textarea>
+
+<label>Descripción de Fallas Históricas</label>
+<textarea id="descripcionHistoricos" rows="4"></textarea>
+
+<label>Alarmas Observadas</label>
+<textarea id="alarmasObservadas" rows="4"></textarea>
+</div>
+</div>
+<div class="section">
+
+
+
+
+<h2>8. Lecturas Operativas</h2>
+
+<div class="grid">
+
+<div>
+<label>Temperatura Motor (°C)</label>
+<input type="number" id="tempMotor">
+</div>
+
+<div>
+<label>Temperatura Refrigerante (°C)</label>
+<input type="number" id="tempRefrigerante">
+</div>
+
+<div>
+<label>Temperatura Aceite Hidráulico (°C)</label>
+<input type="number" id="tempAceiteHidraulico">
+</div>
+
+<div>
+<label>Temperatura Bomba Hidráulica (°C)</label>
+<input type="number" id="tempBomba">
+</div>
+
+<div>
+<label>Presión Hidráulica Principal (bar)</label>
+<input type="number" id="presionPrincipal">
+</div>
+
+<div>
+<label>Presión de Avance (bar)</label>
+<input type="number" id="presionAvance">
+</div>
+
+<div>
+<label>Presión de Vibración (bar)</label>
+<input type="number" id="presionVibracion">
+</div>
+
+<div>
+<label>Presión de Dirección (bar)</label>
+<input type="number" id="presionDireccion">
+</div>
+
+</div>
+
+</div>
+<div class="section">
+
+<h2>9. Resultado Final</h2>
+
+<label>Estado General</label>
+
+<h2>9. Resultado Final</h2>
+
+<label>Estado General</label>
+
+<select id="estadoGeneral">
+
+<option>Excelente</option>
+<option>Bueno</option>
+<option>Regular</option>
+<option>Deficiente</option>
+
+</select>
+
+<label>Recomendaciones</label>
+
+<textarea
+id="recomendaciones"
+rows="5">
+</textarea>
+
+<label>Observaciones Finales</label>
+
+<textarea
+id="observacionesFinales"
+rows="5">
+</textarea>
+
+<label>Firma del Técnico</label>
+
+<input
+id="firmaTecnico"
+type="text">
+
+</div>
+
+<div class="section">
+<h2>10. Repuestos Recomendados</h2>
+
+<table id="tablaRepuestos" class="tabla-repuestos">
+
+<thead>
+<tr>
+<th>Part Number</th>
+<th>Descripción</th>
+<th>Cantidad</th>
+<th>Prioridad</th>
+<th>Acción</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+<input type="text"
+placeholder="Ej: 1234567890">
+</td>
+
+<td>
+<input type="text"
+placeholder="Descripción del repuesto">
+</td>
+
+<td>
+<input type="number"
+min="1"
+value="1">
+</td>
+
+<td>
+<select>
+<option>Alta</option>
+<option>Media</option>
+<option>Baja</option>
+</select>
+</td>
+
+<td>
+<button type="button"
+onclick="eliminarFila(this)">
+Eliminar
+</button>
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<br>
+
+<button type="button"
+onclick="agregarRepuesto()">
+➕ Agregar Repuesto
+</button>
+
+<button
+type="button"
+onclick="exportarRepuestosExcel()">
+📊 Exportar Repuestos Excel
+</button>
+
+</div>
+
+
+<div class="section">
+
+<button type="button" onclick="window.print()">
+Guardar PDF
+</button>
+
+<button type="button"
+onclick="guardarFormulario()">
+Guardar Formulario
+</button>
+
+<button type="button" onclick="document.getElementById('archivoJSON').click()">
+Cargar Formulario
+</button>
+
+<input
+type="file"
+id="archivoJSON"
+accept=".json"
+style="display:none"
+onchange="cargarFormulario(event)">
+
+</form>
+
+</div>
+
+<script>
+
+let imagenesGuardadas = {};
+
+let contadorEvidencias = 0;
+
+const form = document.getElementById('checkForm');
+
+function agregarEvidencia(){
+
+    contadorEvidencias++;
+
+    const contenedor =
+    document.getElementById(
+    "evidenciasExtras"
+    );
+
+    const bloque =
+    document.createElement(
+    "div"
+    );
+
+    bloque.className =
+    "evidenciaExtra";
+
+    bloque.innerHTML = `
+
+        <label>
+        Evidencia ${contadorEvidencias}
+        </label>
+
+        <input
+        type="text"
+        placeholder="Descripción">
+
+        <input
+        type="file"
+        accept="image/*"
+        onchange="mostrarImagen(
+        event,
+        'extraImg${contadorEvidencias}'
+        )">
+
+        <img
+        id="extraImg${contadorEvidencias}"
+        class="preview">
+
+        <button
+        type="button"
+        onclick="this.parentElement.remove()">
+        🗑️ Eliminar
+        </button>
+
+    `;
+
+    contenedor.appendChild(
+    bloque
+    );
+
+}
+
+function mostrarImagen(event,id){
+
+    const archivo = event.target.files[0];
+
+    if(!archivo){
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+        const imagen =
+        document.getElementById(id);
+
+        imagen.src =
+        e.target.result;
+
+        imagen.style.display =
+        "block";
+
+        imagenesGuardadas[id] =
+        e.target.result;
+
+    };
+
+    reader.readAsDataURL(archivo);
+
+}
+``
+function actualizarProgreso(){
+
+    const campos =
+    form.querySelectorAll(
+    'input, select, textarea'
+    );
+
+    let llenos = 0;
+
+    campos.forEach(campo => {
+
+        if(campo.type === 'file'){
+
+            if(campo.files.length > 0){
+                llenos++;
+            }
+
+        }else{
+
+            if(campo.value.trim() !== ''){
+                llenos++;
+            }
+
+        }
+
+    });
+
+    const porcentaje = Math.round(
+    (llenos / campos.length) * 100
+    );
+
+    document.getElementById(
+    'progressBar'
+    ).style.width =
+    porcentaje + '%';
+
+    document.getElementById(
+    'progressBar'
+    ).innerText =
+    porcentaje + '%';
+
+}
+
+form.addEventListener(
+'input',
+actualizarProgreso
+);
+
+function cargarFormulario(event){
+
+    const archivo = event.target.files[0];
+
+    if(!archivo){
+        return;
+    }
+
+    const lector = new FileReader();
+
+    lector.onload = function(e){
+
+        const datos =
+        JSON.parse(e.target.result);
+
+        const campos =
+        document.querySelectorAll(
+            'input, select, textarea'
+        );
+
+let indice = 0;
+
+campos.forEach(campo => {
+
+    if(campo.type !== 'file'){
+
+        const clave =
+        'campo_' + indice;
+
+        if(datos[clave] !== undefined){
+
+            campo.value =
+            datos[clave];
+
+        }
+
+        if(
+            campo.id &&
+            datos[campo.id] !== undefined
+        ){
+
+            campo.value =
+            datos[campo.id];
+
+        }
+
+        indice++;
+
+    }
+
+});
+
+if(datos.imagenes){
+
+    imagenesGuardadas =
+    datos.imagenes;
+
+    Object.entries(
+        datos.imagenes
+    ).forEach(([id,src]) => {
+
+        const img =
+        document.getElementById(id);
+
+        if(img){
+
+            img.src = src;
+
+            img.style.display =
+            "block";
+
+        }
+
+    });
+
+}
+
+if(datos.evidenciasExtras){
+
+    const contenedor =
+    document.getElementById("evidenciasExtras");
+
+    contenedor.innerHTML = "";
+
+    contadorEvidencias = 0;
+
+    datos.evidenciasExtras.forEach(ev => {
+
+        agregarEvidencia();
+
+        const ultimo =
+        document.querySelector(
+            "#evidenciasExtras .evidenciaExtra:last-child"
+        );
+
+        if(!ultimo){
+            return;
+        }
+
+        const descripcion =
+        ultimo.querySelector(
+            'input[type="text"]'
+        );
+
+        const imagen =
+        ultimo.querySelector("img");
+
+        if(descripcion){
+            descripcion.value =
+            ev.descripcion || "";
+        }
+
+        if(imagen && ev.imagen){
+
+            imagen.src =
+            ev.imagen;
+
+            imagen.style.display =
+            "block";
+
+            imagenesGuardadas[imagen.id] =
+            ev.imagen;
+        }
+
+    });
+
+}
+
+if(datos.repuestos){
+
+    const tbody =
+    document.querySelector(
+    "#tablaRepuestos tbody"
+    );
+
+    tbody.innerHTML = "";
+
+    datos.repuestos.forEach(rep => {
+
+        const fila =
+        document.createElement("tr");
+
+        fila.innerHTML = `
+
+        <td>
+            <input
+            type="text"
+            value="${rep.partNumber}">
+        </td>
+
+        <td>
+            <input
+            type="text"
+            value="${rep.descripcion}">
+        </td>
+
+        <td>
+            <input
+            type="number"
+            value="${rep.cantidad}">
+        </td>
+
+        <td>
+            <select>
+                <option ${
+                rep.prioridad==="Alta"?
+                "selected":""
+                }>
+                Alta
+                </option>
+
+                <option ${
+                rep.prioridad==="Media"?
+                "selected":""
+                }>
+                Media
+                </option>
+
+                <option ${
+                rep.prioridad==="Baja"?
+                "selected":""
+                }>
+                Baja
+                </option>
+
+            </select>
+        </td>
+
+        <td>
+            <button
+            type="button"
+            onclick="
+            eliminarFila(this)
+            ">
+            🗑️
+            </button>
+        </td>
+
+        `;
+
+        tbody.appendChild(
+        fila
+        );
+
+    });
+
+}
+
+       document
+       .querySelectorAll("textarea")
+       .forEach(area => {
+
+           ajustarTextarea(area);
+
+});
+
+        actualizarProgreso();
+
+        alert(
+        'Formulario cargado correctamente'
+        );
+
+    };
+
+    lector.readAsText(
+        archivo
+    );
+
+}
+
+function ajustarTextarea(area){
+
+    area.style.height = "auto";
+    area.style.height =
+    area.scrollHeight + "px";
+
+}
+
+function agregarRepuesto(){
+
+    const tbody =
+    document.querySelector("#tablaRepuestos tbody");
+
+    if(!tbody){
+        alert("No se encontró la tabla de repuestos");
+        return;
+    }
+
+    const fila = document.createElement("tr");
+
+    fila.innerHTML = `
+        <td>
+            <input type="text"
+            placeholder="Part Number">
+        </td>
+
+        <td>
+            <input type="text"
+            placeholder="Descripción">
+        </td>
+
+        <td>
+            <input type="number"
+            min="1"
+            value="1">
+        </td>
+
+        <td>
+            <select>
+                <option>Alta</option>
+                <option>Media</option>
+                <option>Baja</option>
+            </select>
+        </td>
+
+        <td>
+            <button
+            type="button"
+            onclick="eliminarFila(this)">
+            🗑️
+            </button>
+        </td>
+    `;
+
+    tbody.appendChild(fila);
+
+    actualizarProgreso();
+
+}
+
+function eliminarFila(btn){
+
+    const fila = btn.closest("tr");
+
+    if(fila){
+        fila.remove();
+    }
+
+    actualizarProgreso();
+
+}
+
+function guardarFormulario(){
+
+    const datos = {};
+
+    const campos =
+    document.querySelectorAll(
+        "input, select, textarea"
+    );
+
+campos.forEach((campo,index)=>{
+
+    if(campo.type !== "file"){
+
+        datos["campo_" + index] =
+        campo.value;
+
+        if(campo.id){
+
+            datos[campo.id] =
+            campo.value;
+
+        }
+
+    }
+
+});
+
+const repuestos = [];
+
+document
+.querySelectorAll(
+"#tablaRepuestos tbody tr"
+)
+.forEach(fila => {
+
+    const celdas =
+    fila.querySelectorAll(
+    "input, select"
+    );
+
+    repuestos.push({
+
+        partNumber:
+        celdas[0].value,
+
+        descripcion:
+        celdas[1].value,
+
+        cantidad:
+        celdas[2].value,
+
+        prioridad:
+        celdas[3].value
+
+    });
+
+});
+
+datos.repuestos =
+repuestos;
+
+datos.imagenes =
+imagenesGuardadas;
+
+const evidenciasExtras = [];
+
+document
+.querySelectorAll(
+'#evidenciasExtras .evidenciaExtra'
+)
+.forEach(item => {
+
+    const descripcion =
+    item.querySelector(
+    'input[type="text"]'
+    );
+
+    const imagen =
+    item.querySelector(
+    'img'
+    );
+
+    evidenciasExtras.push({
+
+        descripcion:
+        descripcion ?
+        descripcion.value :
+        "",
+
+        imagen:
+        imagen ?
+        imagen.src :
+        ""
+
+    });
+
+});
+
+datos.evidenciasExtras =
+evidenciasExtras;
+
+    const archivo = new Blob(
+
+        [
+            JSON.stringify(
+                datos,
+                null,
+                2
+            )
+        ],
+
+        {
+            type:"application/json"
+        }
+
+    );
+
+    const fecha =
+    new Date()
+    .toISOString()
+    .split("T")[0];
+
+    const enlace =
+    document.createElement("a");
+
+    enlace.href =
+    URL.createObjectURL(
+        archivo
+    );
+
+    enlace.download =
+    "CheckLevantamiento_" +
+    fecha +
+    ".json";
+
+    enlace.click();
+
+}
+
+function exportarRepuestosExcel(){
+
+    let csv =
+    "Part Number,Descripción,Cantidad,Prioridad\n";
+
+    document
+    .querySelectorAll(
+    "#tablaRepuestos tbody tr"
+    )
+    .forEach(fila => {
+
+        const campos =
+        fila.querySelectorAll(
+        "input, select"
+        );
+
+        csv +=
+        `"${campos[0].value}",` +
+        `"${campos[1].value}",` +
+        `"${campos[2].value}",` +
+        `"${campos[3].value}"\n`;
+
+    });
+
+    const blob =
+    new Blob(
+        [csv],
+        {
+            type:
+            "text/csv;charset=utf-8;"
+        }
+    );
+
+    const enlace =
+    document.createElement("a");
+
+    enlace.href =
+    URL.createObjectURL(blob);
+
+    enlace.download =
+    "Repuestos.csv";
+
+    enlace.click();
+
+}
+
+document.querySelectorAll("textarea").forEach(area => {
+
+    area.addEventListener("keydown", function(event){
+
+        if(event.key === "Enter"){
+
+            const textoAntes =
+                this.value.substring(0, this.selectionStart);
+
+            const ultimaLinea =
+                textoAntes.split("\n").pop();
+
+            if(ultimaLinea.trim().startsWith("-")){
+
+                event.preventDefault();
+
+                const inicio = this.selectionStart;
+                const fin = this.selectionEnd;
+
+                this.value =
+                    this.value.substring(0, inicio) +
+                    "\n- " +
+                    this.value.substring(fin);
+
+                this.selectionStart =
+                this.selectionEnd =
+                    inicio + 3;
+            }
+
+        }
+
+    });
+
+});
+
+function ajustarTextarea(area){
+
+    area.style.height = "auto";
+
+    area.style.height =
+    area.scrollHeight + "px";
+
+}
+
+document
+.querySelectorAll("textarea")
+.forEach(area => {
+
+    ajustarTextarea(area);
+
+    area.addEventListener(
+        "input",
+        function(){
+
+            ajustarTextarea(this);
+
+        }
+    );
+
+});
+
+function ajustarTextarea(area){
+
+    area.style.height = "auto";
+    area.style.height = area.scrollHeight + "px";
+
+}
+
+</script>
